@@ -1,22 +1,24 @@
 export type quizType = {
-    id: number,
-    name: string,
-    description: string,
-    questions: questionType[]
+    readonly id: number,
+    readonly name: string,
+    readonly description: string,
+    readonly questions: questionType[]
 }
 export type questionType = {
-    number: number,
-    heading: string,
-    alternatives: any[],
+    readonly number: number,
+    readonly heading: string,
+    readonly alternatives: any[],
     correct: number,
 }
 export type quizState = {
     availableQuizes: quizType[]
     currentQuiz: {
         id: number,
+        name: string,
         answered: number,
         correctAnswered: number,
         currentQuestion: number,
-        questions: questionType[]
+        questions: questionType[],
+        finished: boolean
     }
 }
