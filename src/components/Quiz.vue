@@ -1,44 +1,42 @@
 <template>
   <div id="quiz-container">
-    <div v-if="currentQuiz.id === 0" id="quiz-list">
-      <h1 class="mb-2">Start by selecting one from below</h1>
+    <div v-if="quizStore.getCurrentQuiz.id === 0" id="quiz-list">
+      <h1 class="mb-2">Select your quiz</h1>
       <ul id="available-quizes-list">
-        <li v-for="quiz in availableQuizes" :key="quiz.id" class="available-quiz" @click="setNewQuiz(quiz.id)">
+        <li
+          v-for="quiz in quizStore.availableQuizes"
+          :key="quiz.id"
+          class="available-quiz"
+          @click="setNewQuiz(quiz.id)"
+        >
           {{ quiz.name }}
         </li>
       </ul>
     </div>
     <div v-else class="current-quiz-container">
-        <current-quiz />
+      <CurrentQuiz />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
-import { useStore } from "../store/quizStore";
-import quizes from "../data/quizes"
+import { defineComponent } from "vue";
+import { useQuizStore } from "../store/quizStore";
+import quizes from "../data/quizes";
 import CurrentQuiz from "@/components/CurrentQuiz.vue";
 export default defineComponent({
   components: { CurrentQuiz },
   setup() {
-    const quizStore = useStore();
+    const quizStore = useQuizStore();
     // Fetch dummy data
     quizStore.fetchData(quizes);
-    const currentQuiz = computed(() => quizStore.getCurrentQuiz);
-    const availableQuizes = quizStore.availableQuizes;
+
     function setNewQuiz(id: number) {
-      let quiz = availableQuizes.find(element => element.id === id);
-      if(!quiz) {
-        // Error
-        return false;
-      }
-      quizStore.setNewQuiz(quiz);
+      quizStore.setNewQuiz(id);
     }
     return {
-      currentQuiz,
-      availableQuizes,
-      setNewQuiz
+      quizStore,
+      setNewQuiz,
     };
   },
 });
