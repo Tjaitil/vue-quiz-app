@@ -5,7 +5,7 @@ import Quiz from "@/components/Quiz.vue";
 </script>
 <template>
   <Quiz />
-  <footer>Developed by Kjetil Baksaas</footer>
+  <footer class="mb-2">Developed by Kjetil Baksaas</footer>
 </template>
 
 <style>
@@ -35,6 +35,12 @@ html {
 .focus-transition:hover {
     filter: brightness(1.05);
     transform: scale(var(--buttonScale));
+}
+p {
+  margin-bottom: 1rem;
+}
+h1, h2, h3 {
+  margin-bottom: 1rem;
 }
 .mt-1 {
   margin-top: 1rem;

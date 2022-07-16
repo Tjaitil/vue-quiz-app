@@ -26,7 +26,7 @@ export default defineComponent({
 button {
   width: 200px;
   padding: 20px;
-  margin: 10px 10px;
+  margin: 0.5rem;
   background-color: rgb(233, 162, 32);
   border: none;
   font-weight: bold;
