@@ -1,9 +1,11 @@
 
 import { defineStore } from "pinia";
-import { quizType, quizState } from "../data/types"
+import { Quiz } from "../types/Quiz"
+import { QuizStoreState } from "./state-types/QuizStoreState";
 
-
-export const useStore = defineStore({
+// TODO: Research a better way to make availableQuizes static.
+// Was not successfull with MakeRaw, readonly. JSON stringify is a little trick
+export const useQuizStore = defineStore({
     id: "quizStore",
     state: () =>
     ({
@@ -17,33 +19,39 @@ export const useStore = defineStore({
             questions: [],
             finished: false
         }
-    } as quizState),
+    } as QuizStoreState),
     getters: {
         getCurrentQuiz: state => state.currentQuiz,
-        getAvailableQuizes(): Array<object> {
-            return this.availableQuizes;
-        },
+        getAvailableQuizes: state => state.availableQuizes,
         getCurrentQuestion: state => state.currentQuiz.questions[state.currentQuiz.currentQuestion - 1],
     },
     actions: {
-        setNewQuiz(newQuiz: quizType) {
+        setNewQuiz(quizID: number) {
+            let newQuiz = this.availableQuizes.find(element => element.id === quizID);
+            if(!newQuiz) return false;
             this.currentQuiz.id = newQuiz.id;
             this.currentQuiz.name = newQuiz.name;
-            this.currentQuiz.questions = newQuiz.questions;
+            this.currentQuiz.questions = JSON.parse(JSON.stringify(newQuiz.questions));
         },
         cancelCurrentQuiz() {
             this.currentQuiz.id = 0;
             this.currentQuiz.questions = [];
+            this.currentQuiz.name = "";
+            this.currentQuiz.correctAnswered = 0;
+            this.currentQuiz.finished = false;
         },
-        updateCorrect(correct: boolean) {
-            if(correct) this.currentQuiz.correctAnswered++;
+        updateResult(correct: boolean, answeredAlternative: number) {
+            this.getCurrentQuestion.answeredAlternative = answeredAlternative;
+            if(correct)  {
+                this.currentQuiz.correctAnswered++;
+            }
         },
         restartCurrentQuiz() {
             this.currentQuiz.finished = false;
             this.currentQuiz.correctAnswered = 0;
             this.currentQuiz.currentQuestion = 1;
         },
-        nextQuestion() {
+        setNextQuestion() {
             if(this.currentQuiz.currentQuestion === this.getCurrentQuiz.questions.length) {
                 this.currentQuiz.finished = true; 
             } else {
@@ -51,7 +59,7 @@ export const useStore = defineStore({
                 this.currentQuiz.currentQuestion++;
             }
         },
-        fetchData(quizes: Array<quizType>) {
+        fetchData(quizes: Quiz[]) {
             this.availableQuizes = quizes;
         }
     }
