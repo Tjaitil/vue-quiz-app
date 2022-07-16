@@ -5,6 +5,6 @@ import BaseButton from './components/BaseButton.vue';
 
 const app = createApp(App);
 
-app.component('base-button', BaseButton);
+app.component('BaseButton', BaseButton);
 app.use(createPinia());
 app.mount("#app");
