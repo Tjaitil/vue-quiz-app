@@ -6,11 +6,11 @@ Test your knowledge about countries with this quiz app made with Vue 3. More spe
 
 For now there is only one quiz available.
 
-:rocket: Launch
+## :rocket: Launch
 Currently the project is not hosted online. But feel free to run it locally.
 
-\
-:wrench: Future improvemnents
+
+## :wrench: Future improvemnents
 - Design and styling
-- REST API for retrieving and setting daa
+- REST API for crud operations
 - User Interface to create new quizes
